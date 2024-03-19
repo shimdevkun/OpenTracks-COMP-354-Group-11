@@ -41,20 +41,15 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
 public class Track implements JSONSerializable<Track> {
 
     private Track.Id id;
-
-
     private UUID uuid = UUID.randomUUID();
 
-
     private String name = "";
-
     private String description = "";
     private String activityTypeLocalized = "";
 
     private ActivityType activityType;
 
     private final ZoneOffset zoneOffset;
-
 
     private TrackStatistics trackStatistics = new TrackStatistics();
 
