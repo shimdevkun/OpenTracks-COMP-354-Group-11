@@ -56,14 +56,14 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
         //TODO! - Remove
         //Assignee - Jean Robatto
 
-        final String JSON_SERIALIZER_LOG_TAG = "JSONSerializerTest";
-
-        final String trackJSONString = track.toJSON();
-        Log.i(JSON_SERIALIZER_LOG_TAG, trackJSONString);
-
-        final Track trackCopy = JSONSerializable.fromJSON(trackJSONString, Track.class);
-        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.toString());
-        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.getName());
+//        final String JSON_SERIALIZER_LOG_TAG = "JSONSerializerTest";
+//
+//        final String trackJSONString = track.toJSON();
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackJSONString);
+//
+//        final Track trackCopy = JSONSerializable.fromJSON(trackJSONString, Track.class);
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.toString());
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.getName());
 
         //End
 
