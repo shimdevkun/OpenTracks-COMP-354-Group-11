@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.interfaces.JSONSerializable;
 import de.dennisguse.opentracks.data.models.ActivityType;
+import de.dennisguse.opentracks.data.models.CRUDConstants;
 import de.dennisguse.opentracks.data.models.DistanceFormatter;
 import de.dennisguse.opentracks.data.models.SpeedFormatter;
 import de.dennisguse.opentracks.data.models.Track;
@@ -22,7 +23,10 @@ import de.dennisguse.opentracks.util.ExportUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.StringUtils;
 import de.dennisguse.opentracks.util.TrackUtils;
-
+import de.dennisguse.opentracks.stats.TrackStatistics;
+import de.dennisguse.opentracks.util.FirestoreCRUDUtil;
+import java.util.HashMap;
+import java.util.Map;
 public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements ChooseActivityTypeDialogFragment.ChooseActivityTypeCaller {
 
     private static final String TAG = TrackStoppedActivity.class.getSimpleName();
@@ -121,6 +125,41 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
     }
 
     private void storeTrackMetaData(ContentProviderUtils contentProviderUtils, Track track) {
+        Map<String, Object> run = new HashMap<>();
+        TrackStatistics trackStatistics = track.getTrackStatistics();
+        if (track.getId() != null) {
+            run.put("id", track.getId().id());
+        }
+
+        run.put("ascent",  trackStatistics.hasAltitudeMax() ? trackStatistics.getMaxAltitude() : 0); // if didnt go up +Infinity
+        run.put("descent", trackStatistics.hasAltitudeMin()? trackStatistics.getMinAltitude(): 0); // if didn't go down -Infinity
+        run.put("distance", trackStatistics.getTotalDistance().toM()); // meters
+        run.put("maxSpeed", trackStatistics.getMaxSpeed().toMPS());
+        run.put("movingTime", trackStatistics.getMovingTime().toMillis()); // ms
+        run.put("stoppedTime", trackStatistics.getStopTime().toEpochMilli());
+        run.put("timerTime", trackStatistics.getMovingTime().toMillis()); //ms
+        run.put("user", "TerrylAndAxel"); // TODO: get current user?
+
+        FirestoreCRUDUtil firestoreCRUD = new FirestoreCRUDUtil();
+        firestoreCRUD.createEntry(CRUDConstants.RUNS_TABLE, run);
+
+
+//        TEST getEntry
+//        Map<String, Object> getRun = new HashMap<>();
+//        getRun.put("id",123);
+//        firestoreCRUD.getEntry("runs", getRun);
+//
+//        TEST updateEntry
+//        Map<String, Object> updateRun = new HashMap<>();
+//        updateRun.put("id",127);
+//        updateRun.put("ascent",1);
+//        firestoreCRUD.updateEntry("runs", updateRun);
+//
+//        TEST deleteEntry
+//        Map<String, Object> deleteRun = new HashMap<>();
+//        deleteRun.put("id",125);
+//        firestoreCRUD.deleteEntry("runs", deleteRun);
+
         TrackUtils.updateTrack(TrackStoppedActivity.this, track, viewBinding.trackEditName.getText().toString(),
                 viewBinding.trackEditActivityType.getText().toString(), viewBinding.trackEditDescription.getText().toString(),
                 contentProviderUtils);
