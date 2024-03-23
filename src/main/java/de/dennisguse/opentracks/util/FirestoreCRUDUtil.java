@@ -99,4 +99,56 @@ public class FirestoreCRUDUtil {
                     Log.e(CRUDConstants.TAG_ERROR, CRUDConstants.ERROR_RETRIEVING_ENTRY + e.getMessage());
                 });
     }
+
+    /**
+     *
+     * @param data The user data to be added as a new entry
+     */
+    public void createUser(Map<String, Object> data) {
+        db.collection(CRUDConstants.USERS_TABLE)
+                .add(data)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        // Use the document ID from the DocumentReference in the log message
+                        Log.d(CRUDConstants.TAG_CREATED, CRUDConstants.SUCCESS_CREATING_DOCUMENT + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.e(CRUDConstants.TAG_ERROR, CRUDConstants.ERROR_CREATING_DOCUMENT + e.getMessage());
+                    }
+                });
+    }
+
+
+    /**
+     * Retrieves a user entry from the database based on the user ID
+     * @param userId The ID of the user to retrieve
+     */
+    public void getUser(String userId) {
+        db.collection(CRUDConstants.USERS_TABLE).document(userId)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            // Use the userId in the success log
+                            Log.d(CRUDConstants.TAG_GET, CRUDConstants.SUCCESS_RETRIEVING_ENTRY + userId);
+                            // Additional handling of the user data as needed
+                        } else {
+                            Log.d(CRUDConstants.TAG_GET, "No such user exists: " + userId);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.e(CRUDConstants.TAG_ERROR, CRUDConstants.ERROR_RETRIEVING_ENTRY + e.getMessage());
+                    }
+                });
+    }
+
 }
+
