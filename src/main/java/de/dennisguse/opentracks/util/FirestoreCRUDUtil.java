@@ -100,6 +100,10 @@ public class FirestoreCRUDUtil {
                 });
     }
 
+    /**
+     *
+     * @param data The user data to be added as a new entry
+     */
     public void createUser(Map<String, Object> data) {
         db.collection(CRUDConstants.USERS_TABLE)
                 .add(data)
@@ -119,7 +123,10 @@ public class FirestoreCRUDUtil {
     }
 
 
-
+    /**
+     * Retrieves a user entry from the database based on the user ID
+     * @param userId The ID of the user to retrieve
+     */
     public void getUser(String userId) {
         db.collection(CRUDConstants.USERS_TABLE).document(userId)
                 .get()
