@@ -169,6 +169,7 @@ public class Chairlift {
     public static List<Chairlift> getValidChairlifts() {
         return new ArrayList<>(validChairlifts.values());
     }
+
     
 
 
