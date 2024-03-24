@@ -150,5 +150,32 @@ public class FirestoreCRUDUtil {
                 });
     }
 
+    /**
+     * Updates a user's data in the database.
+     * @param userId The ID of the user to update.
+     * @param data The new data for the user.
+     */
+    public void updateUser(String userId, Map<String, Object> data) {
+        db.collection(CRUDConstants.USERS_TABLE).document(userId)
+                .update(data)
+                .addOnSuccessListener(aVoid -> Log.d(CRUDConstants.TAG_UPDATED, CRUDConstants.SUCCESS_UPDATING_DOCUMENT + userId))
+                .addOnFailureListener(e -> Log.e(CRUDConstants.TAG_ERROR, CRUDConstants.ERROR_UPDATING_DOCUMENT + e.getMessage()));
+    }
+
+    /**
+     * Deletes a user from the database.
+     * @param userId The ID of the user to delete.
+     */
+    //public void deleteUser(String userId) {
+    public void deleteUser(String userId) {
+
+            db.collection(CRUDConstants.USERS_TABLE).document(userId)
+                .delete()
+                .addOnSuccessListener(aVoid -> Log.d(CRUDConstants.TAG_DELETED, CRUDConstants.SUCCESS_DELETING_DOCUMENT + userId))
+                .addOnFailureListener(e -> Log.e(CRUDConstants.TAG_ERROR, CRUDConstants.ERROR_DELETING_DOCUMENT + e.getMessage()));
+    }
+
+
+
 }
 

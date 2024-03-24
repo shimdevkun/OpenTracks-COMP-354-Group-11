@@ -7,6 +7,8 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import org.json.JSONArray;
+
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.interfaces.JSONSerializable;
 import de.dennisguse.opentracks.data.models.ActivityType;
@@ -157,6 +159,19 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 
 
 
+//        These are the tests for Update and Delete user methods
+//        //Test updateUser
+//        Map<String, Object> updateUser = new HashMap<>();
+//        updateUser.put("firstName","Oprah");
+//        updateUser.put("lastName","Winfrey");
+//        firestoreCRUD.updateUser("Insert-User-ID-Here", updateUser);
+//
+//        //Test deleteUser
+//        firestoreCRUD.deleteUser("Inser-tUser-ID-Here");
+
+
+
+
 //        TEST getEntry
 //        Map<String, Object> getRun = new HashMap<>();
 //        getRun.put("id",123);
@@ -172,6 +187,7 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 //        Map<String, Object> deleteRun = new HashMap<>();
 //        deleteRun.put("id",125);
 //        firestoreCRUD.deleteEntry("runs", deleteRun);
+
 
         TrackUtils.updateTrack(TrackStoppedActivity.this, track, viewBinding.trackEditName.getText().toString(),
                 viewBinding.trackEditActivityType.getText().toString(), viewBinding.trackEditDescription.getText().toString(),
