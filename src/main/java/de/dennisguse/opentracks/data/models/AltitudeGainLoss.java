@@ -9,10 +9,6 @@ public record AltitudeGainLoss(float gain_m, float loss_m) {
     private static boolean isChairlift;
 
     private static boolean isWaiting;
-    public AltitudeGainLoss(float gain_m, float loss_m) {
-        this.gain_m = gain_m;
-        this.loss_m = loss_m;
-    }
 
     public static boolean isSkiing(){
         return isSkiing;

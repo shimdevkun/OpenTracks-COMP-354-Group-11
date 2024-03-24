@@ -16,6 +16,18 @@ public class Chairlift {
 
     private static final Map<Integer, Chairlift> validChairlifts = new HashMap<>();
 
+    public Chairlift(String name, int number, double averageSpeed, String liftType, int id) {
+        this.name = name;
+        this.number = number;
+        this.averageSpeed = averageSpeed;
+        this.liftType = liftType;
+        this.id = id;
+    }
+
+    public Chairlift() {
+
+    }
+
     public int getId() {
         return id;
     }
@@ -121,7 +133,7 @@ public class Chairlift {
             else
                 return false;
         }
-        
+
         return false;
     }
 
@@ -170,7 +182,7 @@ public class Chairlift {
         return new ArrayList<>(validChairlifts.values());
     }
 
-    
+
 
 
 }
