@@ -27,10 +27,8 @@ import de.dennisguse.opentracks.util.ExportUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.StringUtils;
 import de.dennisguse.opentracks.util.TrackUtils;
-import de.dennisguse.opentracks.stats.TrackStatistics;
 import de.dennisguse.opentracks.data.FirestoreCRUDUtil;
-import java.util.HashMap;
-import java.util.Map;
+
 public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements ChooseActivityTypeDialogFragment.ChooseActivityTypeCaller {
 
     private static final String TAG = TrackStoppedActivity.class.getSimpleName();
