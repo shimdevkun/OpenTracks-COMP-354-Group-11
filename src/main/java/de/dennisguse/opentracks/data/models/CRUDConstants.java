@@ -29,4 +29,8 @@ public class CRUDConstants {
     public static final String SUCCESS_UPDATING_DOCUMENT = "Success updating entry: ";
     public static final String SUCCESS_DELETING_DOCUMENT = "Success deleting entry: ";
     public static final String SUCCESS_RETRIEVING_ENTRY = "Success retrieving entry: ";
+
+    // Reference
+    public static final String CRUD_OPERATION = "CRUD_OPERATION";
+
 }

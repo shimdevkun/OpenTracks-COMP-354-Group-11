@@ -7,11 +7,13 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
-import org.json.JSONArray;
+import com.google.gson.JsonObject;
 
 import de.dennisguse.opentracks.data.ContentProviderUtils;
 import de.dennisguse.opentracks.data.interfaces.JSONSerializable;
 import de.dennisguse.opentracks.data.models.ActivityType;
+import de.dennisguse.opentracks.data.interfaces.ActionCallback;
+import de.dennisguse.opentracks.data.interfaces.ReadCallback;
 import de.dennisguse.opentracks.data.models.CRUDConstants;
 import de.dennisguse.opentracks.data.models.DistanceFormatter;
 import de.dennisguse.opentracks.data.models.SpeedFormatter;
@@ -26,7 +28,7 @@ import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.StringUtils;
 import de.dennisguse.opentracks.util.TrackUtils;
 import de.dennisguse.opentracks.stats.TrackStatistics;
-import de.dennisguse.opentracks.util.FirestoreCRUDUtil;
+import de.dennisguse.opentracks.data.FirestoreCRUDUtil;
 import java.util.HashMap;
 import java.util.Map;
 public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements ChooseActivityTypeDialogFragment.ChooseActivityTypeCaller {
@@ -127,66 +129,74 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
     }
 
     private void storeTrackMetaData(ContentProviderUtils contentProviderUtils, Track track) {
-        Map<String, Object> run = new HashMap<>();
-        TrackStatistics trackStatistics = track.getTrackStatistics();
-        if (track.getId() != null) {
-            run.put("id", track.getId().id());
-        }
 
-        run.put("ascent",  trackStatistics.hasAltitudeMax() ? trackStatistics.getMaxAltitude() : 0); // if didnt go up +Infinity
-        run.put("descent", trackStatistics.hasAltitudeMin()? trackStatistics.getMinAltitude(): 0); // if didn't go down -Infinity
-        run.put("distance", trackStatistics.getTotalDistance().toM()); // meters
-        run.put("maxSpeed", trackStatistics.getMaxSpeed().toMPS());
-        run.put("movingTime", trackStatistics.getMovingTime().toMillis()); // ms
-        run.put("stoppedTime", trackStatistics.getStopTime().toEpochMilli());
-        run.put("timerTime", trackStatistics.getMovingTime().toMillis()); //ms
-        run.put("user", "TerrylAndAxel"); // TODO: get current user?
+        final String trackId = "track_01";
 
-        FirestoreCRUDUtil firestoreCRUD = FirestoreCRUDUtil.getInstance();
-        firestoreCRUD.createEntry(CRUDConstants.RUNS_TABLE, run);
+        //CREATE
+        ActionCallback createCallback = new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(CRUDConstants.TAG_CREATED, "New version called!");
+            }
 
+            @Override
+            public void onFailure() {
+                //pass
+            }
+        };
 
-        //here are the commented out tests for Create and Read of user
-        //Map<String, Object> user = new HashMap<>();
-        //user.put("firstname", "test2user");
-        //user.put("lastname", "test2lastnameuser");
-        //user.put("id", "2");
-        //firestoreCRUD.createUser(user);
+        FirestoreCRUDUtil.getInstance().createEntry(CRUDConstants.RUNS_TABLE, trackId, track.toJSON(), createCallback);
 
-        //firestoreCRUD.getUser("jNRwb1WmNMT4FXKh3hiq");
+        //UPDATE
+        ActionCallback updateCallback = new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(CRUDConstants.TAG_UPDATED, "New version called!");
+            }
 
+            @Override
+            public void onFailure() {
+                //pass
+            }
+        };
 
+        track.setDescription("Updated track");
+        FirestoreCRUDUtil.getInstance().updateEntry(CRUDConstants.RUNS_TABLE, trackId, track.toJSON(), updateCallback);
 
+        //READ
+        ReadCallback readCallback = new ReadCallback() {
+            @Override
+            public void onSuccess(JsonObject data) {
+                Log.d(CRUDConstants.TAG_GET, "New version called!");
+                Track readTrack = JSONSerializable.fromJSON(data, Track.class);
+                //Do stuff with the entry
+                Log.d(CRUDConstants.TAG_GET, readTrack.getDescription());
+            }
 
+            @Override
+            public void onFailure() {
+                //pass
+            }
+        };
 
-//        These are the tests for Update and Delete user methods
-//        //Test updateUser
-//        Map<String, Object> updateUser = new HashMap<>();
-//        updateUser.put("firstName","Oprah");
-//        updateUser.put("lastName","Winfrey");
-//        firestoreCRUD.updateUser("Insert-User-ID-Here", updateUser);
-//
-//        //Test deleteUser
-//        firestoreCRUD.deleteUser("Inser-tUser-ID-Here");
+        FirestoreCRUDUtil.getInstance().getEntry(CRUDConstants.RUNS_TABLE, trackId, readCallback);
 
+        //DELETE
+        ActionCallback deleteCallback = new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                Log.d(CRUDConstants.TAG_DELETED, "New version called!");
+            }
 
+            @Override
+            public void onFailure() {
+                //pass
+            }
+        };
 
+        FirestoreCRUDUtil.getInstance().deleteEntry(CRUDConstants.RUNS_TABLE, trackId, deleteCallback);
 
-//        TEST getEntry
-//        Map<String, Object> getRun = new HashMap<>();
-//        getRun.put("id",123);
-//        firestoreCRUD.getEntry("runs", getRun);
-//
-//        TEST updateEntry
-//        Map<String, Object> updateRun = new HashMap<>();
-//        updateRun.put("id",127);
-//        updateRun.put("ascent",1);
-//        firestoreCRUD.updateEntry("runs", updateRun);
-//
-//        TEST deleteEntry
-//        Map<String, Object> deleteRun = new HashMap<>();
-//        deleteRun.put("id",125);
-//        firestoreCRUD.deleteEntry("runs", deleteRun);
+        //END
 
 
         TrackUtils.updateTrack(TrackStoppedActivity.this, track, viewBinding.trackEditName.getText().toString(),
