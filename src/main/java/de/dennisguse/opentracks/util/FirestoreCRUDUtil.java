@@ -21,9 +21,17 @@ import de.dennisguse.opentracks.data.models.CRUDConstants;
  */
 public class FirestoreCRUDUtil {
     private FirebaseFirestore db;
+    private static FirestoreCRUDUtil instance;
 
-    public FirestoreCRUDUtil() {
+    private FirestoreCRUDUtil() {
         db = FirebaseFirestore.getInstance(); // TODO: Singleton pattern will be implemented later, use it
+    }
+
+    public static FirestoreCRUDUtil getInstance() {
+        if (instance == null) {
+            instance = new FirestoreCRUDUtil();
+        }
+        return instance;
     }
 
     /**
