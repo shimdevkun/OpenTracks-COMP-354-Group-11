@@ -192,7 +192,7 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
             }
         };
 
-        FirestoreCRUDUtil.getInstance().deleteEntry(CRUDConstants.RUNS_TABLE, trackId, deleteCallback);
+        //FirestoreCRUDUtil.getInstance().deleteEntry(CRUDConstants.RUNS_TABLE, trackId, deleteCallback);
 
         //END
 

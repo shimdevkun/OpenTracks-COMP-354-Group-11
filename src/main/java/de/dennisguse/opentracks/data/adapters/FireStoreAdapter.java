@@ -1,5 +1,6 @@
 package de.dennisguse.opentracks.data.adapters;
 
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -44,7 +45,7 @@ public class FireStoreAdapter {
             JsonElement idElement = jsonObject.get("id");
             if (idElement.isJsonPrimitive() && idElement.getAsJsonPrimitive().isString()) {
                 jsonObject.remove("id");
-                jsonObject.addProperty("id", idElement.getAsInt());
+                jsonObject.addProperty("id", Integer.parseInt(idElement.getAsString().split("\\.")[0]));
             }
         }
         return jsonObject;
