@@ -7,8 +7,14 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
 
+import com.google.gson.JsonObject;
+
 import de.dennisguse.opentracks.data.ContentProviderUtils;
+import de.dennisguse.opentracks.data.interfaces.JSONSerializable;
 import de.dennisguse.opentracks.data.models.ActivityType;
+import de.dennisguse.opentracks.data.interfaces.ActionCallback;
+import de.dennisguse.opentracks.data.interfaces.ReadCallback;
+import de.dennisguse.opentracks.data.models.CRUDConstants;
 import de.dennisguse.opentracks.data.models.DistanceFormatter;
 import de.dennisguse.opentracks.data.models.SpeedFormatter;
 import de.dennisguse.opentracks.data.models.Track;
@@ -21,6 +27,7 @@ import de.dennisguse.opentracks.util.ExportUtils;
 import de.dennisguse.opentracks.util.IntentUtils;
 import de.dennisguse.opentracks.util.StringUtils;
 import de.dennisguse.opentracks.util.TrackUtils;
+import de.dennisguse.opentracks.data.FirestoreCRUDUtil;
 
 public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements ChooseActivityTypeDialogFragment.ChooseActivityTypeCaller {
 
@@ -46,6 +53,21 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
 
         ContentProviderUtils contentProviderUtils = new ContentProviderUtils(this);
         Track track = contentProviderUtils.getTrack(trackId);
+
+        //Temporary code to illustrate JSON serialization and loading of Track model
+        //TODO! - Remove
+        //Assignee - Jean Robatto
+
+//        final String JSON_SERIALIZER_LOG_TAG = "JSONSerializerTest";
+//
+//        final String trackJSONString = track.toJSON();
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackJSONString);
+//
+//        final Track trackCopy = JSONSerializable.fromJSON(trackJSONString, Track.class);
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.toString());
+//        Log.i(JSON_SERIALIZER_LOG_TAG, trackCopy.getName());
+
+        //End
 
         viewBinding.trackEditName.setText(track.getName());
 
@@ -105,6 +127,7 @@ public class TrackStoppedActivity extends AbstractTrackDeleteActivity implements
     }
 
     private void storeTrackMetaData(ContentProviderUtils contentProviderUtils, Track track) {
+
         TrackUtils.updateTrack(TrackStoppedActivity.this, track, viewBinding.trackEditName.getText().toString(),
                 viewBinding.trackEditActivityType.getText().toString(), viewBinding.trackEditDescription.getText().toString(),
                 contentProviderUtils);
