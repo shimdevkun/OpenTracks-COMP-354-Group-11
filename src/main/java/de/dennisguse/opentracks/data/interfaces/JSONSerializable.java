@@ -41,6 +41,11 @@ public interface JSONSerializable<T> {
      * @param <T> Reference to expected class return type
      */
     static <T> T fromJSON(final JsonObject json, final Class<T> type) {
+        //Preprocess json
+        //Check for any values ending in .0 to convert them to integers
+        String regex = "\\.0\\b";
+        String processedJson = json.toString().replaceAll(regex, "");
+
         if (json == null) {
             // Handle the case where the JSON object is null
             Log.e(CRUDConstants.CRUD_OPERATION, "JSON object is null");
@@ -50,7 +55,7 @@ public interface JSONSerializable<T> {
         final Gson gson = new Gson();
         T t = null;
         try {
-            t = gson.fromJson(json, type);
+            t = gson.fromJson(processedJson, type);
             Log.d(CRUDConstants.CRUD_OPERATION, "Deserialization successful");
         } catch (JsonSyntaxException e) {
             // Handle JSON syntax exception

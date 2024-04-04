@@ -1,6 +1,8 @@
 package de.dennisguse.opentracks.data.adapters;
 
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -39,13 +41,6 @@ public class FireStoreAdapter {
             } else {
                 // Convert non-nested value to JSON element
                 jsonObject.addProperty(key, String.valueOf(value));
-            }
-        }
-        if (jsonObject.has("id")) {
-            JsonElement idElement = jsonObject.get("id");
-            if (idElement.isJsonPrimitive() && idElement.getAsJsonPrimitive().isString()) {
-                jsonObject.remove("id");
-                jsonObject.addProperty("id", Integer.parseInt(idElement.getAsString().split("\\.")[0]));
             }
         }
         return jsonObject;
