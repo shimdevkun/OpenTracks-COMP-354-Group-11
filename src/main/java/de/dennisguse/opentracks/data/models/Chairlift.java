@@ -166,7 +166,8 @@ public class Chairlift {
                     //user is waiting
                     waitingTime += duration;
                     isWaiting = true;
-                } else {
+                }
+                else {
                     //user is moving
                     if (isWaiting) {
                         movingTime += waitingTime;
