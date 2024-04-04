@@ -41,6 +41,9 @@ import de.dennisguse.opentracks.stats.TrackStatistics;
 public class Track implements JSONSerializable<Track> {
 
     private Track.Id id;
+
+    private String externalId;
+
     private UUID uuid = UUID.randomUUID();
 
     private String name = "";
@@ -73,6 +76,9 @@ public class Track implements JSONSerializable<Track> {
     public void setId(Id id) {
         this.id = id;
     }
+
+    public String getExternalId() {return this.externalId;}
+    public void setExternalId(String externalId) {this.externalId = externalId;}
 
     public UUID getUuid() {
         return uuid;

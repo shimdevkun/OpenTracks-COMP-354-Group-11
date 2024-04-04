@@ -24,7 +24,7 @@ public class FirestoreCRUDUtil {
     private static FirestoreCRUDUtil instance;
 
     private FirestoreCRUDUtil() {
-        db = FirebaseFirestore.getInstance(); // TODO: Singleton pattern will be implemented later, use it
+        db = FirebaseFirestore.getInstance();
     }
 
     public static FirestoreCRUDUtil getInstance() {
