@@ -30,9 +30,38 @@ public class Chairlift {
     private double movingTime;
     private double waitingTime;
 
+
+
+    private double slopePercentage;
+
+    public double getSlopePercentage() {
+        return slopePercentage;
+    }
+
+    public void setSlopePercentage(double slopePercentage) {
+        this.slopePercentage = slopePercentage;
+    }
+
+    private Altitude altitude;
+
+    public Altitude getAltitude() {
+        return altitude;
+    }
+    public void setAltitude(Altitude altitude) {
+        this.altitude = altitude;
+    }
+
+    private Distance distanceFromPPoint;
+
+    public Distance getDistanceFromPPoint() {
+        return distanceFromPPoint;
+    }
+
+    public void setDistanceFromPPoint(Distance distanceFromPPoint) {
+        this.distanceFromPPoint = distanceFromPPoint;
+    }
+
     // Constructor
-
-
     public Chairlift(String name, int number, double averageSpeed, int id, double totalDistance, double totalTime, double maxSpeed, double movingTime, double waitingTime) {
         this.name = name;
         this.number = number;
@@ -199,6 +228,7 @@ public class Chairlift {
 
 
     private void put(int id, Chairlift validChairlift) {
+
     }
 
     //Helper method to calculate total distance covered
@@ -258,6 +288,26 @@ public class Chairlift {
             maxSpeed = Math.max(maxSpeed, speedValueMPS);
         }
         return maxSpeed;
+    }
+
+    private double getSlopePercentage(TrackPoint previousPoint){
+        double slopePercentage;
+        //to calculate altitude change
+        double altitudeChange = this.getAltitude().toM() - previousPoint.getAltitude().toM();
+        //to calculate distance traveled (using meters)
+        Distance distanceTraveled = Distance.of(this.calculateTotalDistance((List<TrackPoint>) previousPoint));
+        //to check if the distance traveled is not zero to avoid division by zero
+        if (distanceTraveled.toM() != 0) {
+            //to calculate slope percentage based on altitude change and distance traveled
+            slopePercentage = (altitudeChange / distanceTraveled.toM()) * 100;
+        }
+        else {
+            slopePercentage = 0; //If distance is zero
+        }
+        this.setSlopePercentage(slopePercentage);
+
+        return slopePercentage;
+
     }
 
     public static List<Chairlift> getValidChairlifts() {
