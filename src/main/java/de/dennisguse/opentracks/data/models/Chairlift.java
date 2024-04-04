@@ -31,13 +31,18 @@ public class Chairlift {
     private double waitingTime;
 
     // Constructor
-    public Chairlift(String name, int number, double averageSpeed, String liftType) {
+
+
+    public Chairlift(String name, int number, double averageSpeed, int id, double totalDistance, double totalTime, double maxSpeed, double movingTime, double waitingTime) {
         this.name = name;
         this.number = number;
         this.averageSpeed = averageSpeed;
-        this.liftType = liftType;
-        this.id = nextId;
-        nextId++;
+        this.id = id;
+        this.totalDistance = totalDistance;
+        this.totalTime = totalTime;
+        this.maxSpeed = maxSpeed;
+        this.movingTime = movingTime;
+        this.waitingTime = waitingTime;
     }
 
     // Getters and Setters
@@ -179,7 +184,7 @@ public class Chairlift {
             double totalTimeThreshold = 40; //inminutes
             if (totalTimeMovingWaiting > totalTimeThreshold) {
 
-                Chairlift validChairlift = new Chairlift(name, number, averageSpeed, liftType);
+                Chairlift validChairlift = new Chairlift(name, number, averageSpeed, id, totalDistance, totalTime, maxSpeed, movingTime, waitingTime);
                 validChairlifts.put(validChairlift.getId(), validChairlift);
                 for (TrackPoint trackPoint : trackPoints){
                     trackPoint.setChairliftSegment(true);
@@ -188,7 +193,6 @@ public class Chairlift {
                 return true; //Likely on chairlift
             }
         }
-
         return false; //Not on chairlift
     }
 
