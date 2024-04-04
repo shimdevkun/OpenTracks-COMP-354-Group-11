@@ -19,7 +19,7 @@ public interface ExternalStorageUtil {
      *
      * @param collection The collection containing the entry to be updated
      * @param id         The ID of the entry to be updated
-     * @param jsonData       The new data to be updated in the entry
+     * @param jsonData   The new data to be updated in the entry
      */
     void updateEntry(final String collection, final String id, final JsonObject jsonData, final ActionCallback callback);
 
