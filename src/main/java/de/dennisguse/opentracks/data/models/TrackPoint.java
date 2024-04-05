@@ -30,9 +30,7 @@ import java.time.Instant;
 /**
  * Sensor and/or location information for a specific point in time.
  * <p>
- * Time is created using the
- * {@link de.dennisguse.opentracks.services.handlers.MonotonicClock}, because
- * system time jump backwards.
+ * Time is created using the {@link de.dennisguse.opentracks.services.handlers.MonotonicClock}, because system time jump backwards.
  * GPS time is ignored as for non-GPS events, we could not create timestamps.
  */
 public class TrackPoint {
@@ -49,12 +47,12 @@ public class TrackPoint {
     private Double longitude;
     private Distance horizontalAccuracy;
     private Distance verticalAccuracy;
-    private Altitude altitude; // TODO use Altitude.WGS84
+    private Altitude altitude; //TODO use Altitude.WGS84
     private Speed speed;
     private Float bearing;
     private Distance sensorDistance;
 
-    // ===============================
+    //===============================
     private boolean isChairliftSegment;
 
     public boolean isChairliftSegment() {
@@ -64,23 +62,22 @@ public class TrackPoint {
     public void setChairliftSegment(boolean chairliftSegment) {
         isChairliftSegment = chairliftSegment;
     }
-
-    // ==================================================
+    //==================================================
     public enum Type {
-        SEGMENT_START_MANUAL(-2), // Start of a segment due to user interaction (start, resume)
+        SEGMENT_START_MANUAL(-2), //Start of a segment due to user interaction (start, resume)
 
-        SEGMENT_START_AUTOMATIC(-1), // Start of a segment due to too much distance from previous TrackPoint
-        TRACKPOINT(0), // Was created due to sensor data (may contain GPS or other BLE data)
+        SEGMENT_START_AUTOMATIC(-1), //Start of a segment due to too much distance from previous TrackPoint
+        TRACKPOINT(0), //Was created due to sensor data (may contain GPS or other BLE data)
 
-        // Was used to distinguish the source (i.e., GPS vs BLE sensor), but this was
-        // too complicated. Everything is now a TRACKPOINT again.
+        // Was used to distinguish the source (i.e., GPS vs BLE sensor), but this was too complicated. Everything is now a TRACKPOINT again.
         @Deprecated
         SENSORPOINT(2),
-        IDLE(3), // Device became idle
+        IDLE(3), //Device became idle
 
-        SEGMENT_END_MANUAL(1); // End of a segment
+        SEGMENT_END_MANUAL(1); //End of a segment
 
         public final int type_db;
+
 
         Type(int type_db) {
             this.type_db = type_db;
@@ -93,8 +90,7 @@ public class TrackPoint {
 
         public static Type getById(int id) {
             for (Type e : values()) {
-                if (e.type_db == id)
-                    return e;
+                if (e.type_db == id) return e;
             }
 
             throw new RuntimeException("unknown id: " + id);
@@ -131,12 +127,6 @@ public class TrackPoint {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
-    }
-
-    // copy constructor
-    public TrackPoint(Trackpoint tp) {
-        this(Type.TRACKPOINT, tp.getLocation(), tp.getTime());
-
     }
 
     public static TrackPoint createSegmentStartManualWithTime(Instant time) {
@@ -203,7 +193,7 @@ public class TrackPoint {
         return this;
     }
 
-    // TODO Better return null, if no location is present aka latitude == null etc.
+    //TODO Better return null, if no location is present aka latitude == null etc.
     @NonNull
     public Location getLocation() {
         Location location = new Location("");
@@ -235,11 +225,10 @@ public class TrackPoint {
         this.speed = location.hasSpeed() ? Speed.of(location.getSpeed()) : null;
         this.horizontalAccuracy = location.hasAccuracy() ? Distance.of(location.getAccuracy()) : null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            this.verticalAccuracy = location.hasVerticalAccuracy() ? Distance.of(location.getVerticalAccuracyMeters())
-                    : null;
+            this.verticalAccuracy = location.hasVerticalAccuracy() ? Distance.of(location.getVerticalAccuracyMeters()) : null;
         }
 
-        // TODO Should we copy the bearing?
+        //TODO Should we copy the bearing?
         return this;
     }
 
@@ -268,23 +257,24 @@ public class TrackPoint {
         this.altitudeLoss_m = altitudeLoss_m;
         return this;
     }
-
+    
     public double getSlopePercentage() {
-        double slopePercentage;
-        Trackpoint previous = lastTrackPoint;
-
-        // Slope percentage negative - Ski run
-        if (this.hasAltitudeLoss()) {
-            // Slope percentage = - altitude change / distance travelled * 100
-            slopePercentage = -(this.getAltitudeLoss() / this.distanceToPrevious(this)) * 100;
-            this.slopePercentage = slopePercentage;
-
-            return slopePercentage;
-        }
-        // Slope percentage positive - Chair Lift ride
-        slopePercentage = (this.getAltitudeGain() / this.distanceToPrevious(this)) * 100;
-        this.slopePercentage = slopePercentage;
-        return slopePercentage;
+    	double slopePercentage;
+    	Trackpoint previous = lastTrackPoint;
+    	
+    	// Slope percentage negative - Ski run
+    	if (this.hasAltitudeLoss())
+    	{
+	    	// Slope percentage = - altitude change / distance travelled * 100
+    		slopePercentage = -(this.getAltitudeLoss() / this.distanceToPrevious(this)) * 100;
+    		this.slopePercentage = slopePercentage;
+    		
+    		return slopePercentage;
+    	}
+    	// Slope percentage positive - Chair Lift ride
+    	slopePercentage = (this.getAltitudeGain() / this.distanceToPrevious(this)) * 100;
+		this.slopePercentage = slopePercentage;
+		return slopePercentage;
     }
 
     @NonNull
@@ -296,6 +286,7 @@ public class TrackPoint {
         return Instant.now()
                 .isBefore(time.plus(MAX_LOCATION_AGE));
     }
+
 
     public boolean hasAltitude() {
         return altitude != null;
@@ -328,7 +319,6 @@ public class TrackPoint {
         this.speed = speed;
         return this;
     }
-
     public boolean hasBearing() {
         return bearing != null;
     }
@@ -393,7 +383,7 @@ public class TrackPoint {
         return bearingTo(dest.getLocation());
     }
 
-    // TODO Bearing requires a location; what do we do if we don't have any?
+    //TODO Bearing requires a location; what do we do if we don't have any?
     public float bearingTo(@NonNull Location dest) {
         return getLocation().bearingTo(dest);
     }
