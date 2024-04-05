@@ -35,12 +35,7 @@ public class TrackDifferentiate {
     public TrackDifferentiate(Track.Id tid, Context c) {
         trackId = tid;
         contentProviderUtils = new ContentProviderUtils(c);
-
-        // list of trackpoints grouped per run (index 0 is first run, 1 second run,
-        // etc...)
-        // liftPoints = new ArrayList<>();
         runPoints = new ArrayList<TrackPoint>();
-        // liftCount = 0;
         runCount = 0;
         prevType = TrackPoint.Type.IDLE;
 
@@ -52,18 +47,17 @@ public class TrackDifferentiate {
             TrackPoint trackpoint;
             while (tpi.hasNext()) {
                 trackpoint = tpi.next();
-                TrackPoint copy = new TrackPoint(trackpoint);
                 // if trackpoint goes from idle to non idle (or vice versa) or if your altitude
                 // gain changes from positive to negative (or vice versa)
                 if (trackpoint.getType != prevType || (lastTrackPoint.hasAltitudeGain() && trackpoint.hasAltitudeLoss())
                         || (lastTrackPoint.hasAltitudeLoss() && trackpoint.hasAltitudeGain())) {
                     runCount++;
                     runPoints = new ArrayList<TrackPoint>();
-                    runPoints.add(copy);
+                    runPoints.add(trackpoint);
                     runs.set(runCount, runPoints);
                     // if none of the conditions above are met, it must be part of the same run
                 } else {
-                    runPoints.add(copy);
+                    runPoints.add(trackpoint);
                     runs.set(runCount, runPoints);
                 }
                 prevType = trackpoint.getType();
