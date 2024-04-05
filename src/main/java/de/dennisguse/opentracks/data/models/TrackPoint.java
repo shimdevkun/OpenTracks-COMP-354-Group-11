@@ -135,7 +135,7 @@ public class TrackPoint {
 
     // copy constructor
     public TrackPoint(Trackpoint tp) {
-        this(Type.TRACKPOINT, tp.getLocation(), tp.getTime());
+        this(tp.getType(), tp.getLocation(), tp.getTime());
 
     }
 
