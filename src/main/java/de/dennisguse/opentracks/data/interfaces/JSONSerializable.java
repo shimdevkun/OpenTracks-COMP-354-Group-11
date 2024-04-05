@@ -8,6 +8,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import de.dennisguse.opentracks.data.adapters.Gson_DurationTypeAdapter;
+import de.dennisguse.opentracks.data.adapters.Gson_InstantTypeAdapter;
 import de.dennisguse.opentracks.data.models.CRUDConstants;
 
 /**
@@ -26,6 +31,8 @@ public interface JSONSerializable<T> {
         // Create a GsonBuilder and configure it to serialize special floating point values
         Gson gson = new GsonBuilder()
                 .serializeSpecialFloatingPointValues()
+                .registerTypeAdapter(Instant.class, new Gson_InstantTypeAdapter())
+                .registerTypeAdapter(Duration.class, new Gson_DurationTypeAdapter())
                 .create();
 
         // Convert the object to JsonObject using Gson
@@ -52,7 +59,12 @@ public interface JSONSerializable<T> {
             return null;
         }
 
-        final Gson gson = new Gson();
+        Gson gson = new GsonBuilder()
+                .serializeSpecialFloatingPointValues()
+                .registerTypeAdapter(Instant.class, new Gson_InstantTypeAdapter())
+                .registerTypeAdapter(Duration.class, new Gson_DurationTypeAdapter())
+                .create();
+
         T t = null;
         try {
             t = gson.fromJson(processedJson, type);
