@@ -68,4 +68,8 @@ public class TrackDifferentiate {
     public List<TrackPoint> getLiftPoints() {
         return liftPoints;
     }
+
+    public List<ArrayList<TrackPoint>> getRuns() {
+        return runs;
+    }
 }
