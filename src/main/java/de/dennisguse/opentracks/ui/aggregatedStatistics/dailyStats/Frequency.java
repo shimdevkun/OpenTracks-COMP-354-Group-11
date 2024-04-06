@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
  */
 public enum Frequency {
     THREE(0,3),
-    FIVE(0,5);
+    FIVE(1,5);
 
     private final int value;
     private final int id;
