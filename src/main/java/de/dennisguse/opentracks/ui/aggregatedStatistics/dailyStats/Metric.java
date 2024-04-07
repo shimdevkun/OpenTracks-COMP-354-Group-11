@@ -11,7 +11,7 @@ public enum Metric {
     CHAIRLIFT_SPEED(2, "Chairlift Speed"),
     TOTAL_DISTANCE(3, "Total Distance");
 
-    private int id;
+    private final int id;
     private final String displayName;
 
     Metric(int id, String displayName) {
