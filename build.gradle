@@ -7,8 +7,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.2'
+
+        classpath 'com.android.tools.build:gradle:8.3.1'
         classpath 'com.google.gms:google-services:4.4.1'
+        
     }
 }
 
@@ -128,7 +130,10 @@ android {
 }
 
 dependencies {
+
     implementation 'com.google.firebase:firebase-firestore:24.10.3'
+    androidTestImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
