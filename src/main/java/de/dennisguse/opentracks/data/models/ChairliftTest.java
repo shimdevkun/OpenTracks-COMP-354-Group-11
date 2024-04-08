@@ -27,4 +27,5 @@ public class ChairliftTest {
 
         assertEquals(expectedTotalDistance, actualTotalDistance, 0.01);
     }
+
 }

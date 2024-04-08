@@ -337,5 +337,4 @@ public class Chairlift {
         return metricsData;
     }
 
-
 }
