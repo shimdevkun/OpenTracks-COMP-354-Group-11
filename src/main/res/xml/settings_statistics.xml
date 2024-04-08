@@ -9,4 +9,9 @@
             android:defaultValue="0"
             app:useSimpleSummaryProvider="true"/>
     </PreferenceCategory>
+    <ListPreference android:key="@string/plotting_frequency_key"
+        app:useSimpleSummaryProvider="true"
+        app:title="Plotting Aggregation Frequency"
+        android:defaultValue="0"/>
+
 </PreferenceScreen>

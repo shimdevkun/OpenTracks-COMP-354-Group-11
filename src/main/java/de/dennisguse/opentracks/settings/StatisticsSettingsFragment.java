@@ -1,4 +1,6 @@
 package de.dennisguse.opentracks.settings;
+import de.dennisguse.opentracks.R;
+import de.dennisguse.opentracks.ui.aggregatedStatistics.dailyStats.Frequency;
 
 import android.os.Bundle;
 
@@ -6,8 +8,8 @@ import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.ui.aggregatedStatistics.dailyStats.Metric;
+import java.util.List;
 
 public class StatisticsSettingsFragment extends PreferenceFragmentCompat {
 
@@ -29,6 +31,20 @@ public class StatisticsSettingsFragment extends PreferenceFragmentCompat {
 
         metricPreference.setEntries(metricEntries);
         metricPreference.setEntryValues(metricEntryValues);
+
+        ListPreference freqPreference = findPreference(getString(R.string.plotting_frequency_key));
+        String[] plottingFreqEntries = new String[Frequency.values().length]; //List of frequencies
+        String[] plottingFreqValues = new String[Frequency.values().length]; //List of frequency IDs
+
+        List<Frequency> allFreqValues = List.of(Frequency.values());
+        int iterFreq = 0;
+        for (Frequency freqValue: allFreqValues) {
+            plottingFreqEntries[iterFreq] = Integer.toString(freqValue.getValue());
+            plottingFreqValues[iterFreq] = Integer.toString(freqValue.getId());
+            iterFreq++;
+        }
+        freqPreference.setEntries(plottingFreqEntries);
+        freqPreference.setEntryValues(plottingFreqValues);
     }
 
     @Override
