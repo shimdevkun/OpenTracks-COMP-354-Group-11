@@ -753,9 +753,9 @@ public class PreferencesUtils {
 
     public static int getMetricPreferenceValue()
     {
-        String value = getString(R.string.plotting_metric_key,"0");
         try{
-            return Integer.parseInt(value);
+
+            return getInt(R.string.plotting_metric_key,0);
         }
         catch(Exception e)
         {
@@ -764,9 +764,8 @@ public class PreferencesUtils {
     }
     public static int getFrequencyPreferenceValue()
     {
-        String value = getString(R.string.plotting_frequency_key,"0");
         try{
-            return Integer.parseInt(value);
+            return getInt(R.string.plotting_frequency_key,0);
         }
         catch(Exception e)
         {

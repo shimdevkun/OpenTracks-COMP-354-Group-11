@@ -121,11 +121,11 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
         int position = array_metrics.getPosition(item);
         spinner.setSelection(position);
     }
-    private void setDefaultFrequencySpinner(Spinner spinner, ArrayAdapter<Frequency> array_metrics)
+    private void setDefaultFrequencySpinner(Spinner spinner, ArrayAdapter<Frequency> array_frequency)
     {
         int preferenceValue = PreferencesUtils.getFrequencyPreferenceValue();
         Frequency item = Frequency.findById(preferenceValue);
-        int position = array_metrics.getPosition(item);
+        int position = array_frequency.getPosition(item);
         spinner.setSelection(position);
     }
 
