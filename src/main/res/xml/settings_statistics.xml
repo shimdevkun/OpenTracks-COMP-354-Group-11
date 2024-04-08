@@ -6,4 +6,9 @@
     <PreferenceCategory app:title="@string/settings_daily_stats_title">
 
     </PreferenceCategory>
+    <ListPreference android:key="@string/plotting_frequency_key"
+        app:useSimpleSummaryProvider="true"
+        app:title="Plotting Aggregation Frequency"
+        android:defaultValue="0"/>
+
 </PreferenceScreen>
