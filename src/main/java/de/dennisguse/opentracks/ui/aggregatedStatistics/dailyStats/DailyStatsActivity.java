@@ -113,7 +113,6 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
             line_chart.saveToPath(name, "/DCIM/");
         }
     }
-
     private void setDefaultMetricSpinner(Spinner spinner, ArrayAdapter<Metric> array_metrics)
     {
         int preferenceValue = PreferencesUtils.getMetricPreferenceValue();
@@ -128,6 +127,7 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
         int position = array_frequency.getPosition(item);
         spinner.setSelection(position);
     }
+
 
     @Override
     protected View getRootView() {
