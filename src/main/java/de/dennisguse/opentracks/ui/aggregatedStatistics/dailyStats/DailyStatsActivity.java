@@ -20,6 +20,7 @@ import java.util.Date;
 import de.dennisguse.opentracks.R;
 import de.dennisguse.opentracks.AbstractActivity;
 import de.dennisguse.opentracks.databinding.DailyStatsBinding;
+import de.dennisguse.opentracks.settings.PreferencesUtils;
 
 public class DailyStatsActivity extends AbstractActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
     private DailyStatsBinding viewBinding;
@@ -37,6 +38,7 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
         ArrayAdapter<Metric> array_metrics = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Metric.values());
         spin_metrics.setAdapter(array_metrics);
 
+
         // Create and populate the spin_freq spinner with Metric enums.
         Spinner spin_freq = (Spinner)findViewById(R.id.daily_data_point);
         ArrayAdapter<Frequency> array_freq = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Frequency.values());
@@ -44,6 +46,8 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
 
         line_chart = (LineChart) findViewById(R.id.dailyChart);
 
+        setDefaultMetricSpinner(spin_metrics,array_metrics);
+        setDefaultFrequencySpinner(spin_freq,array_freq);
         // create and attach listener for export button object
         Button exportButton = findViewById(R.id.saveIMG);
         exportButton.setOnClickListener(this);
@@ -109,6 +113,21 @@ public class DailyStatsActivity extends AbstractActivity implements AdapterView.
             line_chart.saveToPath(name, "/DCIM/");
         }
     }
+    private void setDefaultMetricSpinner(Spinner spinner, ArrayAdapter<Metric> array_metrics)
+    {
+        int preferenceValue = PreferencesUtils.getMetricPreferenceValue();
+        Metric item = Metric.findById(preferenceValue);
+        int position = array_metrics.getPosition(item);
+        spinner.setSelection(position);
+    }
+    private void setDefaultFrequencySpinner(Spinner spinner, ArrayAdapter<Frequency> array_frequency)
+    {
+        int preferenceValue = PreferencesUtils.getFrequencyPreferenceValue();
+        Frequency item = Frequency.findById(preferenceValue);
+        int position = array_frequency.getPosition(item);
+        spinner.setSelection(position);
+    }
+
 
     @Override
     protected View getRootView() {
