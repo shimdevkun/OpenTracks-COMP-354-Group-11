@@ -314,6 +314,29 @@ public class Chairlift {
         return new ArrayList<>(validChairlifts.values());
     }
 
+    //Method to get all valid chairlifts
+    public static List<Chairlift> getAllValidChairlifts() {
+        return new ArrayList<>(validChairlifts.values()); //use .values from hashmap to get the collection.
+    }
+
+    //Method to get a chairlift by ID
+    public static Chairlift getChairliftById(int id) {
+        return validChairlifts.get(id);
+    }
+
+    //Method to get the metrics to display
+    public static Object[][] getChairliftMetrics() {
+        List<Chairlift> chairlifts = getAllValidChairlifts();
+        Object[][] metricsData = new Object[chairlifts.size()][/* Number of columns */];
+
+        for (int i = 0; i < chairlifts.size(); i++) {
+            Chairlift chairlift = chairlifts.get(i);
+            // Populate metricsData with chairlift metrics as needed
+        }
+
+        return metricsData;
+    }
+
 
 
 }
