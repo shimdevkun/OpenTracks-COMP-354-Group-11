@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
+import de.dennisguse.opentracks.ui.aggregatedStatistics.dailyStats.Metric;
 import java.util.List;
 
 public class StatisticsSettingsFragment extends PreferenceFragmentCompat {
@@ -15,6 +16,22 @@ public class StatisticsSettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         addPreferencesFromResource(R.xml.settings_statistics);
+
+        ListPreference metricPreference = findPreference(getString(R.string.plotting_metric_key));
+
+        String[] metricEntries = new String[Metric.values().length]; //Metric display names
+        String[] metricEntryValues = new String[Metric.values().length]; //Metric IDs
+
+        int iterMetric = 0;
+        for(Metric metric: Metric.values()) {
+            metricEntries[iterMetric] = metric.toString();
+            metricEntryValues[iterMetric] = Integer.toString(metric.getId());
+            iterMetric++;
+        }
+
+        metricPreference.setEntries(metricEntries);
+        metricPreference.setEntryValues(metricEntryValues);
+
         ListPreference freqPreference = findPreference(getString(R.string.plotting_frequency_key));
         String[] plottingFreqEntries = new String[Frequency.values().length]; //List of frequencies
         String[] plottingFreqValues = new String[Frequency.values().length]; //List of frequency IDs
@@ -28,9 +45,6 @@ public class StatisticsSettingsFragment extends PreferenceFragmentCompat {
         }
         freqPreference.setEntries(plottingFreqEntries);
         freqPreference.setEntryValues(plottingFreqValues);
-
-
-
     }
 
     @Override
