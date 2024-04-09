@@ -25,7 +25,7 @@ public class TrackDifferentiate {
 
 	// Internal references to chairLift object and SkiRun models, initalized using differentiated TrackPoints
 	private SkiRun run;
-	private chairLift lift;
+	private Chairlift lift;
 	
     private final ContentProviderUtils contentProviderUtils;
     private final Track.Id trackId;
@@ -46,14 +46,17 @@ public class TrackDifferentiate {
         
         // Initalize fields by differentiate
         differentiate();
-        run = new SkiRun(runPoints);
-        lift = new chairLift(liftPoints); // OBS : most likely this generalizes all chairLifts into a single chairLift object.
+        run = new SkiRun("run", runPoints);
+        //lift = new Chairlift("lift", 1, , trackId, liftPoints); // OBS : most likely this generalizes all chairLifts into a single chairLift object.
     }
 
     public void differentiate() {
         // iterate through all trackpoints and store them in arraylists
         try (TrackPointIterator tpi = contentProviderUtils.getTrackPointLocationIterator(trackId, null)) {
             TrackPoint trackpoint;
+            TrackPoint lastTrackpoint;
+            trackpoint = tpi.next();
+            lastTrackpoint = trackpoint;
             while (tpi.hasNext()) {
                 trackpoint = tpi.next();
                 
@@ -61,8 +64,8 @@ public class TrackDifferentiate {
                 // BOTH : if trackpoint goes from idle to non idle (or vice versa)
                 // RUN : if your altitude gain changes from positive to negative.
                 // LIFT : if your altitude gain changes from negative or 0 to positive.
-                if (trackpoint.getType != prevType || (lastTrackPoint.hasAltitudeLoss() && trackpoint.hasAltitudeGain()
-                		|| (lastTrackPoint.getAltitude() == 0 && trackpoint.hasAltitudeGain()))) {
+                if (trackpoint.getType() != prevType || (lastTrackpoint.hasAltitudeLoss() && trackpoint.hasAltitudeGain()
+                		|| (lastTrackpoint.getAltitude().toM() == 0 && trackpoint.hasAltitudeGain()))) {
                     liftCount++;
                     liftPoints = new ArrayList<TrackPoint>();
                     liftPoints.add(trackpoint);
@@ -70,7 +73,7 @@ public class TrackDifferentiate {
                 }
                 
  
-                else if (trackpoint.getType != prevType || (lastTrackPoint.hasAltitudeGain() && trackpoint.hasAltitudeLoss())) {
+                else if (trackpoint.getType() != prevType || (lastTrackpoint.hasAltitudeGain() && trackpoint.hasAltitudeLoss())) {
                     runCount++;
                     runPoints = new ArrayList<TrackPoint>();
                     runPoints.add(trackpoint);
@@ -78,8 +81,8 @@ public class TrackDifferentiate {
                     
                 }
                 // If types are equal check if they are part of the same segment of ride / run
-                else if (trackpoint.getType == prevType || (lastTrackPoint.hasAltitudeLoss() && trackpoint.hasAltitudeGain()
-                		|| (lastTrackPoint.getAltitude() == 0 && trackpoint.hasAltitudeGain())))
+                else if (trackpoint.getType() == prevType || (lastTrackpoint.hasAltitudeLoss() && trackpoint.hasAltitudeGain()
+                		|| (lastTrackpoint.getAltitude().toM() == 0 && trackpoint.hasAltitudeGain())))
                 {
                 	// Trackpoint part of same ride segment
                 	liftPoints.add(trackpoint);
@@ -107,7 +110,7 @@ public class TrackDifferentiate {
     
     // Getters for models of chairLift and SkiRun, allows to get references and call service functions, such as getting wait time, average speed, etc.
     // Check model implementations to see what service functions are available.
-    public chairLift getLift()
+    public Chairlift getLift()
     {
     	return lift;
     }

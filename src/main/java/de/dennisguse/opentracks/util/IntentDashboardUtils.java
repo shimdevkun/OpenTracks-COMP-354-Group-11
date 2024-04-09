@@ -30,6 +30,7 @@ import de.dennisguse.opentracks.data.tables.TracksColumns;
 import de.dennisguse.opentracks.io.file.TrackFileFormat;
 import de.dennisguse.opentracks.settings.PreferencesUtils;
 import de.dennisguse.opentracks.stats.OverallStatistics;
+import de.dennisguse.opentracks.services.TrackDifferentiate;
 
 /**
  * Create an {@link Intent} to request showing tracks on a Map or a Dashboard.
@@ -284,9 +285,10 @@ public class IntentDashboardUtils {
      * get access internal data such as average speed, wait time, total distance, etc.
      * 
      * @param context the context for relevant TrackPoints to differentiate
-     * @param trackIds the track ids for relevant TrackPoints to differentiate
+     * @param tid the track ids for relevant TrackPoints to differentiate
      */
     public TrackDifferentiate getTrackDifferentiate(Context context, Track.Id tid){
-    	trackDifferentiate = TrackDifferentiate(context, tid);
+    	trackDifferentiate = new TrackDifferentiate(tid, context);
+        return trackDifferentiate;
     }
 }
